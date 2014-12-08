@@ -1,30 +1,21 @@
 package org.geepawhill.wildapricot;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.geepawhill.wildapricot.data.ApiAccount;
 import org.geepawhill.wildapricot.data.ApiAuthenticationToken;
 import org.geepawhill.wildapricot.data.ApiContactField;
 import org.geepawhill.wildapricot.data.ApiContacts;
 import org.geepawhill.wildapricot.data.ApiDetail;
-import org.geepawhill.wildapricot.data.ApiSearchResult;
 import org.geepawhill.wildapricot.data.ApiVersion;
 
 import com.google.gson.Gson;
