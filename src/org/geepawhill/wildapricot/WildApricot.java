@@ -2,9 +2,11 @@ package org.geepawhill.wildapricot;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
@@ -74,6 +76,18 @@ public class WildApricot
 	{
 		URI uri = makeBuilder("/v1/Accounts/" + accountId + "/ContactFields").build();
 		return gson.fromJson(performFullQuery(uri), ApiContactField[].class);
+	}
+	
+	public ApiContacts fetchContactsUsing(String filterString) throws Exception
+	{
+		URI uri = makeBuilder("/v2/Accounts/"+accountId+"/Contacts").addParameter("$async","false").addParameter("$filter",filterString).build();
+		return gson.fromJson(performFullQuery(uri), ApiContacts.class);
+	}
+
+	public ApiContacts fetchContactsUsing(List<NameValuePair> parameters) throws Exception
+	{
+		URI uri = makeBuilder("/v2/Accounts/"+accountId+"/Contacts").addParameter("$async","false").addParameters(parameters).build();
+		return gson.fromJson(performFullQuery(uri), ApiContacts.class);
 	}
 
 	public ApiContacts fetchAllContacts() throws Exception
