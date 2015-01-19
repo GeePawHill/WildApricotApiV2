@@ -7,12 +7,5 @@ public class ApiAccount
 	public String Url;
 	public String PrimaryDomainName;
 	public ApiDetail[] Resources;
-	
-	@Override
-	public String toString()
-	{
-		String result = "Account: "+Name+" Id: "+Id+"\n";
-		for(ApiDetail detail : Resources) result+="\t"+detail;
-		return result;
-	}
+	public ApiContactLimitInfo ContactLimitInfo;
 }
