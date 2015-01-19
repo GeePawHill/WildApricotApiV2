@@ -18,20 +18,34 @@ public class TestingServer implements SimpleServer
 	private boolean isRecording;
 	private LiveServer server;
 	private int nextResponse;
+	private File recordings;
 
-	public TestingServer(CloseableHttpClient client)
+	public TestingServer(File recordings, CloseableHttpClient client)
 	{
 		script = new Script();
 		isRecording = true;
 		server = new LiveServer(client);
 		nextResponse=0;
+		this.recordings = recordings;
 	}
 	
 	public TestingServer()
 	{
-		this(HttpClients.createDefault());
+		this(new File("."));
+	}
+	
+	public TestingServer(File recordings)
+	{
+		this(recordings, HttpClients.createDefault());
 	}
 
+	
+	public TestingServer(File recordings,String scriptName) throws Exception
+	{
+		this(recordings, HttpClients.createDefault());
+		loadScript(scriptName);
+	}
+	
 	@Override
 	public SimpleResponse execute(HttpUriRequest request) throws Exception
 	{
@@ -57,6 +71,16 @@ public class TestingServer implements SimpleServer
 		response.toBodyFile(file);
 	}
 	
+	public void saveScript(String name) throws Exception
+	{
+		saveScript(new File(recordings,name));
+	}
+	
+	public void loadScript(String name) throws Exception
+	{
+		loadScript(new File(recordings,name));
+	}
+	
 	public void saveScript(File file) throws Exception
 	{
 		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file));
@@ -69,6 +93,7 @@ public class TestingServer implements SimpleServer
 		ObjectInputStream input = new ObjectInputStream(new FileInputStream(file));
 		script = (Script) input.readObject();
 		input.close();
+		isRecording=false;
 	}
 
 }

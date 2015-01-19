@@ -10,10 +10,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
+import org.geepawhill.server.LiveServer;
 import org.geepawhill.server.SimpleResponse;
 import org.geepawhill.server.SimpleServer;
 import org.geepawhill.wildapricot.data.ApiAccount;
 import org.geepawhill.wildapricot.data.ApiAuthenticationToken;
+import org.geepawhill.wildapricot.data.ApiContactField;
 import org.geepawhill.wildapricot.data.ApiContacts;
 
 import com.google.gson.Gson;
@@ -46,7 +48,7 @@ public class WildApricotClient
 	public ApiAccount[] fetchAccounts(SimpleServer server, String token) throws Exception
 	{
 		URI uri = makeUriBuilder(V2_ACCOUNTS).build();
-		return gson.fromJson(performGet(null, token, uri), ApiAccount[].class);
+		return gson.fromJson(performGet(server, token, uri), ApiAccount[].class);
 	}
 
 	public ApiContacts fetchContactsUsing(SimpleServer server, String token, String account, String filterString) throws Exception
@@ -60,13 +62,19 @@ public class WildApricotClient
 	public ApiContacts fetchContactsUsing(SimpleServer server, String token, String account,List<NameValuePair> parameters) throws Exception
 	{
 		URI uri = makeContactsUriBuilder(account).addParameter("$async","false").addParameters(parameters).build();
-		return gson.fromJson(performGet(null, token, uri), ApiContacts.class);
+		return gson.fromJson(performGet(server, token, uri), ApiContacts.class);
 	}
 
 	public ApiContacts fetchAllContacts(SimpleServer server, String token, String account) throws Exception
 	{
 		URI uri = makeContactsUriBuilder(account).addParameter("$async","false").build();
-		return gson.fromJson(performGet(null, token, uri), ApiContacts.class);
+		return gson.fromJson(performGet(server, token, uri), ApiContacts.class);
+	}
+	
+	public ApiContactField[] fetchContactFields(SimpleServer server, String token, String account) throws Exception
+	{
+		URI uri = makeUriBuilder(V2_ACCOUNTS+account+"/ContactFields").build();
+		return gson.fromJson(performGet(server, token, uri), ApiContactField[].class);
 	}
 
 	public ApiAuthenticationToken authenticate(SimpleServer server,String apikey) throws Exception
@@ -128,5 +136,6 @@ public class WildApricotClient
 	{
 		return new URIBuilder().setScheme("https").setPath(path).setHost("api.wildapricot.org");
 	}
+
 	
 }
