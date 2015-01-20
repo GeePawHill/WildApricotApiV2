@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 public class ApiContact
 {
@@ -24,7 +26,6 @@ public class ApiContact
 	
 	public ApiContact()
 	{
-		
 	}
 	
 	public ApiContact(String firstName,String lastName,int id)
@@ -32,7 +33,10 @@ public class ApiContact
 		this.FirstName = firstName;
 		this.LastName = lastName;
 		this.Id = id;
+		this.FieldValues = new ArrayList<ApiFieldValue>();
 	}
+	
+	
 	
 	public String makeNameKey()
 	{
@@ -81,7 +85,7 @@ public class ApiContact
 	{
 		ApiFieldValue apiValue = new ApiFieldValue();
 		apiValue.FieldName =name;
-		apiValue.Value = new Gson().fromJson ("{"+value+"}", JsonElement.class);
+		apiValue.Value = new JsonPrimitive(value);
 		for(int v=0; v<FieldValues.size();v++)
 		{
 			if( FieldValues.get(v).FieldName.equalsIgnoreCase(name))

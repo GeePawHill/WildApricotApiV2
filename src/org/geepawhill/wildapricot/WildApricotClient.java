@@ -54,7 +54,7 @@ public class WildApricotClient
 	public ApiContacts fetchContactsUsing(SimpleServer server, String token, String account, String filterString) throws Exception
 	{
 		URI uri = makeContactsUriBuilder(account).addParameter("$async","false").addParameter("$filter",filterString).build();
-		String result = performGet(null, token, uri);
+		String result = performGet(server, token, uri);
 		return gson.fromJson(result, ApiContacts.class);
 	}
 
