@@ -83,6 +83,7 @@ public class ApiContact
 	
 	public void addOrReplaceString(String name,String value)
 	{
+		if(FieldValues==null) FieldValues = new ArrayList<ApiFieldValue>();
 		ApiFieldValue apiValue = new ApiFieldValue();
 		apiValue.FieldName =name;
 		apiValue.Value = new JsonPrimitive(value);

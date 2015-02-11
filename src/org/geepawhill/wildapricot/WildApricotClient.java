@@ -10,11 +10,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
-import org.geepawhill.server.LiveServer;
 import org.geepawhill.server.SimpleResponse;
 import org.geepawhill.server.SimpleServer;
 import org.geepawhill.wildapricot.data.ApiAccount;
 import org.geepawhill.wildapricot.data.ApiAuthenticationToken;
+import org.geepawhill.wildapricot.data.ApiContact;
 import org.geepawhill.wildapricot.data.ApiContactField;
 import org.geepawhill.wildapricot.data.ApiContacts;
 
@@ -135,6 +135,30 @@ public class WildApricotClient
 	private URIBuilder makeUriBuilder(String path)
 	{
 		return new URIBuilder().setScheme("https").setPath(path).setHost("api.wildapricot.org");
+	}
+	
+	private HttpPost makePost(String access, URI uri)
+	{
+		HttpPost post = new HttpPost(uri);
+		post.addHeader(AUTHORIZATION_LABEL, AUTHORIZATION_BEARER+" "+access);
+		post.addHeader(CONTENT_TYPE_LABEL, ACCEPT_JSON);
+		post.addHeader(USER_AGENT_LABEL, USER_AGENT);
+		post.addHeader(ACCEPT_LABEL, ACCEPT_JSON);
+		return post;
+	}
+
+	public void addContact(SimpleServer server, String token, String account, ApiContact contact) throws Exception
+	{
+		URI uri = makeContactsUriBuilder(account).build();
+		HttpPost post = makePost(token,uri);
+		contact.Id=0;
+		String body = gson.toJson(contact);
+		
+		HttpEntity bodyEntity = new ByteArrayEntity(body.getBytes("UTF-8"));
+		post.setEntity(bodyEntity);
+		
+		SimpleResponse response = server.execute(post);
+		System.out.println(response.body);
 	}
 
 	
